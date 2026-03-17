@@ -1,0 +1,161 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87482a347c5e0dd42a488dd0ee64b1c7, type: 3}
+  m_Name: English
+  m_EditorClassIdentifier: 
+  language: English
+  inputText:
+  - Look at the cubes to make them light up!
+  - "HERE. Black in Rembrandt\u2019s time"
+  - "Black people were already here, in the Netherlands, in the seventeenth century,
+    in Dutch society and in art.  Rembrandt regularly portrayed black people, but
+    how are black people represented in the rest of seventeenth-century Dutch art?
+    What is the image projected? And who were the models?  A relatively large number
+    of black people appeared in art, particularly between 1620 and 1660. They are
+    shown in all kinds of roles and often accurately portrayed from life. It has
+    recently been discovered that a significant community of black people lived in
+    the neighbourhood of Rembrandt\u2019s own house. This unusual period in Dutch
+    art and history is the subject of this temporary exhibition."
+  - 'Black from a distance '
+  - "Map of Pernambuco, in: Johannes Blaeu, \u2018Grooten Atlas oft, Werelt-beschrijving\u2019,
+    Amsterdam 1665 "
+  - 'A map of the Dutch colony in the northeast of Brazil. This is how the colony
+    was depicted. Upper right there is a sugar mill where enslaved Africans worked.
+    There is no hint of the harsh working conditions. To the left the Africans are
+    shown dancing and making music. For the people of the Netherlands the gruesome
+    reality of slavery was kept out of the picture. '
+  - STUDIES
+  - Head of a Boy, c. 1660-1665  Leendert van der Cooghen
+  - This finely executed study must have been observed directly. The boy looks very
+    lifelike. Unfortunately, we know nothing about him. Leendert van der Cooghen
+    lived and worked in Haarlem. He made this kind of study to find out how he could
+    depict the subject best. It was study material, not intended for sale.
+  - Black in Amsterdam
+  - The Market in Dam Square, 1653  Jacob van der Ulft
+  - "In the seventeenth century, Amsterdam was already a multicultural city. Jewish
+    immigrants, East Europeans, Arab traders, Asian seamen and Africans had made
+    their homes here. This view of Dam Square offers proof. It shows a group of men
+    in eastern turbans slightly to the left of centre. And one black figure, beside
+    a fish stall in the foreground on the right. The number of black residents was
+    small. Some five thousand people were living in and around the Jodenbreestraat
+    around 1650. Around eighty of them were black \u2013 about 1.5 percent of the
+    neighbourhood\u2019s residents."
+  - Portraits
+  - "Few portraits of black people were made in the seventeenth century. That is
+    to say images of a particular person where the recognizability of that individual
+    is concerned. However, there are portraits of black people, but mostly as servants
+    of the white elite. Unfortunately we seldom know the sitter\u2019s identity. "
+  - Portrait of Diego Bemba, 1643  Jasper | Jeronimus Becx
+  - "We know the names of these three men from the inscriptions on the backs of the
+    paintings. This is Diego Bemba. He holds a small casket, probably a diplomatic
+    gift. He was one of Don Miguel de Castro\u2019s servants. "
+  - Portrait of Dom Miguel de Castro, 1643  Jasper | Jeronimus Becx
+  - 'Dom Miguel de Castro makes here a powerful, serious expression. He was a member
+    of the Congolese elite. This portrait was commissioned by the Dutch West India
+    Company. The WIC and the Congolese rulers traded in gold an ivory, but mainly
+    in people. This is why Dom Miguel now is seen as a controversial figure. Dom
+    Miguel wears fashionable European clothes. This is probably the suit he had acquired
+    in Brazil, when he had visited the Dutch colony earlier. '
+  - Portrait of Pedro Sunda, 1643  Jasper | Jeronimus Becx
+  - "Pedro Sunda holds an elephant\u2019s tusk. Ivory was one of the Congo\u2019s
+    major export products. The status of these young men is unclear. Were they assistants
+    of the noble Dom Miguel or were they enslaved? "
+  - Young black archer, ca. 1639-1640  Govert Flinck
+  - Rembrandt's pupils also painted realistically. This painting by Govert Flinck
+    from 1640 may have been modeled on a black man who lived nearby. Flinck carefully
+    studied the man's facial expression and gestures in order to paint a fantasy
+    figure that he could sell on the market.
+  - Woman in her toilet with servant, 1678  Frans van Mieris
+  - From 1640 black servants were painted differently, they were given different
+    roles. They were now often associated with one main white figure, and they were
+    active. They held a horse, or a mirror to assist when a white woman got dressed.
+    They were no longer in the front, but to the side or in the background. They
+    were smaller than the main character. In this way, the painter could make the
+    main figure seem more important.
+  - 'Man in a Turban, c. 1627-1629  Jan Lievens '
+  - 'Lievens made this drawing in Leiden when he was working closely with his friend
+    Rembrandt. The individual appearance makes  it clear that someone modelled for
+    this, but that model was then given a turban and a feather to wear, turning him
+    into a Mediterranean type. '
+  - 'Portrait of a girl, 1645  Wenzel Hollar '
+  - 'Three rare portrait etchings of black people. They wear the normal seventeenth-century
+    clothing of the middle class. Hollar made these portraits in Antwerp, as we can
+    see from the inscription beside the girl. The prints were intended for sale.
+    The artist showed his skill by successfully rendering a black skin in an etching.
+    This appealed to collectors. '
+  - Portrait of a man, c. 1660-1675  Wallerant Vaillant
+  - Vaillant made a true likeness of this man with an individual appearance . However,
+    this print appears to have been made to sell to collectors, not commissioned
+    by the sitter. Vaillant was an expert in mezzotint, a technique for making prints
+    in different shades of black. It was obviously also ideal for depicting dark
+    skin.
+  - Two African Men, 1661  Rembrandt
+  - "It seems logical that two black neighbours of Rembrandt were           the models
+    for this painting. But the painting is dated 1661,           when Rembrandt was
+    living on Rozengracht, on the other side                of Amsterdam. However,
+    there is documentary evidence that                         he had already made
+    a painting of two black men while living                           in Jodenbreestraat.
+    Were there other paintings of this subject?                                            
+    Or did Rembrandt only finish off the first painting and date it                                              
+    a few years later?  It is also unusual that Rembrandt depicted the close bond 
+    between the two men. Were they friends? Or perhaps brothers?               It
+    remains speculation, but if the models were brothers, and if                           
+    they came from the neighbourhood, they may have been Bastiaan                                            
+    and Manuel Fernando. They were sailors from the island of S\xE3o                                                
+    Tom\xE9 in their early twenties, who lived at the end of the street                                                       
+    near Sint Antoniespoort. "
+  - Head of a Boy in a Turban, c. 1635  Gerrit Dou
+  - "Dou was Rembrandt\u2019s first pupil. He took up his master\u2019s idea of studying
+    black people. The result was this endearing tronie of a young  man in a fantasy
+    costume, who looks at us over his shoulder.  "
+  - King Caspar, 1654   Hendrick Heerschop
+  - "Legend has it that one of the three magi who came to worship the Christ child
+    was an African. Sometimes he is called Caspar, sometimes Balthasar. Heerschop
+    painted him without surroundings or story. He can only be identified from his
+    expensive clothes and the jar of incense he gave as his gift. But it is the man\u2019s
+    face that attracts the most attention; he looks at us proudly and self-confidently. "
+  - Here and now
+  - "Black plays an entirely different role in contemporary art than it did in Rembrandt\u2019s
+    time. In seventeenth-century art we see black people through the eyes of white
+    artists and we do not know who the models are. Black artists today often reflect
+    on their own identity, reality, and surroundings. When black people are portrayed,
+    we know who they are. There is agency from both sides now: of the maker and the
+    sitter. Even more prominently than in the past, black people are present, here,
+    in society and in art. "
+  - The Unspoken Truth, 2019  DION ROSINA  Dion Rosina used a nineteenth-century
+    photograph of an enslaved man in Brazil for this painting, The opening is an
+    allusion to the Netherlands' colonial past in that country -- a subject that
+    is a hiatus in our collective memory. The past is behind the opening, but at
+    the same time impresses itself on the viewer through the man.
+  - 'The New Utopia Begins Here: Hermina Huiswoud, 2019   IRIS KENSMIL   In her portraits,
+    Kensmil focuses on black people who played important roles in history. Hermina
+    Huiswoud (1905-1998) was a political activist. She belonged to a generation of
+    anti-colonial thinkers, leaders and organizers who were active in the fight against
+    European and American imperialism. After the Second World War she worked in Amsterdam,
+    and as a supporter of the Our Suriname Association (VOS) fought for the independence
+    of the Dutch colony. '
+  - Ilona, 2019  HEDY TJIN  Hedy Tjin is an illustrative designer. In her work she
+    expresses her fascination for patterns and designs, reflecting the influence
+    of cultural and ethnic subjects.
+  - "Doritos, 2019  IRI\xC9E ZAMBL\xC9  A woman sits on a couch holding a bag of
+    tortilla chips. Black people are now represented in art in everyday situations.
+    The artist Iri\xE9e Zambl\xE9 expresses her feelings: \u2018I still don't see
+    enough of the people who pass me every day reflected in art. That's why I feel
+    an urge to capture them in my paintings.\u2019 "
+  - "Hollandse Meesters Her-Zien: Debora Nassy, 2020 CIGDEM YUKSEL (fotografie),
+    J\xD6RGEN TJON A FONG (concept)  Debora Nassy was a woman of colour who worked
+    as a servant in Amsterdam. When she was about to leave for Guyana, she visited
+    a notary to make sure that she would not be taken into slavery overseas. Her
+    employer, the Jewish-Portuguese David Nassy, declared that Debora \u2013 \u2018a
+    brown female or mulatta\u2019 \u2013 was born in freedom in his house and was
+    raised as a free person. "
+  - Exit

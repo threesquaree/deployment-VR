@@ -1,0 +1,19 @@
+{
+  "object_name_to_exhibit": {
+    "B1": "Diego_Bemba",
+    "B2": "Dom_Miguel",
+    "B3": "Pedro_Sunda",
+    "C5": "Turban",
+    "C6": "King_Caspar"
+  },
+  "exhibit_to_object_name": {
+    "Diego_Bemba": "B1",
+    "Dom_Miguel": "B2",
+    "Pedro_Sunda": "B3",
+    "Turban": "C5",
+    "King_Caspar": "C6"
+  },
+  "aoi_aliases": {
+    "The ivory tusk": "Ivory tusk"
+  }
+}

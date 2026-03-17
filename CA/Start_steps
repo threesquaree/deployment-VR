@@ -1,0 +1,30 @@
+cd C:\Users\s3134946\Desktop\Thesis\agent+VR_RCEA\agent+VR\Research\CA\original
+
+$env:RASA_LICENSE = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwMWM2NTNhMy0zNWMyLTQxOTgtOTM5OC1kNGFlNWQzNzNlMTUiLCJpYXQiOjE3NTk4Mjg4MjIsIm5iZiI6MTc1OTgyODgyMSwic2NvcGUiOiJyYXNhOnBybyByYXNhOnBybzpjaGFtcGlvbiByYXNhOnZvaWNlIiwiZXhwIjoxODU0NTIzMjIxLCJlbWFpbCI6InAuYi52YW5kZXJrYWFkZW5Ac3R1ZGVudC51dHdlbnRlLm5sIiwiY29tcGFueSI6IlJhc2EgQ2hhbXBpb25zIn0.4y3oTMBrUvzsDR6YB-9mkiD4cszQatfCiX5o6P0d1JWMQ37U6rERnscVwg1VnjFzQkp9vY18gfBqx7lZPOy1600-FsWHZXdDBI2c5J4xiwBpgG8IIRndQPmScG6R1Gzc6Q1m1hXDPWvfu-vNB9GhpZaslREEiVpWreFzfcuaLkGejdaQ36Bt0UpwrtcGIJ8EDYMZTY6dckSUoeMSBkZdJrp0OdfgdD3krj4PbwieOG-ZwRoQeaLtBzyVEFZmZjVjZrCtFkusIxdXk35vdIPYo4HbPEenwIcJhwyDiLhVAx64a8-dzDSPE04ygZ57ezV9HZfZ8evWrY1AUYnmvllOgQ"
+
+rasa train
+
+or 
+
+rasa shell --model models\20260122-175008-brass-facade.tar.gz  #new model 
+
+rasa run 
+
+rasa run actions
+
+
+
+                    
+                        20251008-145005-annoying-jail.tar.gz
+
+
+two terminals:
+
+cd C:\Users\Vrmuseum\Desktop\Research\CA\original
+.\.venv\Scripts\activate
+rasa run -m models\20260122-175008-brass-facade.tar.gz
+
+
+cd C:\Users\Vrmuseum\Desktop\Research\CA\original
+.\.venv\Scripts\activate
+rasa run actions

@@ -1,0 +1,164 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87482a347c5e0dd42a488dd0ee64b1c7, type: 3}
+  m_Name: Dutch
+  m_EditorClassIdentifier: 
+  language: Dutch
+  inputText:
+  - Kijk naar de blokken om ze te verlichten!
+  - HIER. Zwart in Rembrandts tijd
+  - "Zwarte mensen waren in de 17de eeuw al aanwezig, hier, in de Nederlandse samenleving
+    \xE9n in de kunst.  Rembrandt heeft geregeld zwarte mensen verbeeld. Maar hoe
+    zijn zwarte mensen in de rest van de 17de-eeuwse Nederlandse kunst vertegenwoordigd?
+    Welk beeld wordt er van hen gegeven? En wie stonden er eigenlijk model?  Vooral
+    tussen 1620 en 1660 zijn er vrij veel zwarte mensen afgebeeld. Ze zijn in allerlei
+    verschillende rollen te zien en vaak zorgvuldig naar het leven weergegeven. Bovendien
+    is recent ontdekt dat juist in de buurt van Rembrandts huis relatief veel zwarte
+    mensen leefden. Deze bijzondere periode in de Nederlandse kunst en geschiedenis
+    is het onderwerp van deze tijdelijke tentoonstelling."
+  - Zwart van een afstand
+  - "Kaart van Pernambuco, in: Johannes Blaeu, \u2018Grooten Atlas oft, Werelt-beschrijving\u2019,
+    Amsterdam 1665"
+  - "Een kaart van de Hollandse kolonie in het noordoosten van Brazili\xEB. Dit is
+    hoe de kolonie in beeld werd gebracht. Rechtsboven is een suikermolen waar slaafgemaakten
+    uit Afrika werken. Van de keiharde werkomstandigheden is niets te zien. Links
+    zijn de Afrikanen zelfs dansend en muziek makend afgebeeld. Voor de mensen in
+    Holland bleef de gruwelijke realiteit van de slavernij buiten beeld."
+  - STUDIES
+  - Hoofd van een jongen, ca. 1660-1665  Leendert van der Cooghen
+  - Deze fijn uitgewerkte studie moet wel naar het leven zijn gemaakt. De jongen
+    ziet er zo levensecht uit. Helaas is er niets over hem bekend. Leendert van der
+    Cooghen woonde en werkte in Haarlem. Hij maakte dit soort studies om te bestuderen
+    hoe hij een onderwerp het beste kon weergeven. Het was studiemateriaal, niet
+    bestemd voor de verkoop.
+  - Zwart in Amsterdam
+  - De markt op de Dam, 1653  Jacob van der Ulft
+  - "Amsterdam was in de 17de eeuw al een multiculturele stad. Er vestigden zich
+    hier Joodse immigranten, Oost-Europeanen, Arabische handelaren, Aziatische zeelui
+    \xE9n Afrikanen. Dit gezicht op de Dam bewijst dat. Iets links van het midden
+    staat een groep mannen met oosterse tulbanden. En rechtsvoor, bij een viskraam,
+    \xE9\xE9n zwarte persoon. Het aantal zwarte inwoners was dan ook klein. De buurt
+    rond de Jodenbreestraat telde omstreeks 1650 circa 5.000 inwoners. Zo\u2019n
+    80 van hen waren zwart, oftewel circa 1,5 procent."
+  - Portretten
+  - Van zwarte mensen zijn in de 17de eeuw niet veel portretten gemaakt. Dat wil
+    zeggen afbeeldingen van een bepaald persoon, waarbij het gaat om de herkenbaarheid
+    van het individu. Toch zijn er wel portretten van zwarte mensen, maar meestal 
+    afgebeeld als bediende van de witte elite. Helaas weten we zelden wie de geportretteerde
+    is.
+  - Portret van Diego Bemba, 1643  Jasper | Jeronimus Becx
+  - Dat we de namen van deze drie mannen kennen, is te danken aan inscripties op
+    de achterzijde van de schilderijen. Dit is Diego Bemba. Hij houdt een doosje
+    vast, waarschijnlijk een relatiegeschenk. Hij was een van de bedienden van Don
+    Miguel de Castro.
+  - Portret van Dom Miguel de Castro, 1643  Jasper | Jeronimus Becx
+  - "Dom Miguel de Castro maakt hier een krachtige, serieuze indruk. Hij behoorde
+    dan ook tot de Congolese elite. Dit portret werd gemaakt in opdracht van de Hollandse
+    Westindische Compagnie. De WIC en de Congolese machthebbers dreven handel in
+    goud en ivoor, maar vooral ook in mensen. Daarom is Dom Miguel tegenwoordig ook
+    een omstreden figuur.  Dom draagt modieuze Europese kleding. Waarschijnlijk is
+    dit het pak dat hij gekregen had in Brazili\xEB, waar hij eerder de Hollandse
+    kolonie had bezocht."
+  - Portret van Pedro Sunda, 1643  Jasper | Jeronimus Becx
+  - Pedro Sunda houdt een olifantstand vast. Ivoor was een belangrijk exportproduct
+    van Congo. De status van deze jongemannen is onduidelijk. Waren zij assistenten
+    van de adellijke Dom Miguel of waren ze slaafgemaakten?
+  - Jonge zwarte boogschutter, ca. 1639-1640  Govert Flinck
+  - "Ook Rembrandts leerlingen schilderden realistisch. Dit schilderij van Govert
+    Flinck uit 1640 is mogelijk gemodelleerd naar een zwarte man die vlakbij woonde.
+    Flinck bestudeerde nauwkeurig de gezichtsuitdrukking en gebaren van de man om
+    een \u200B\u200Bfantasiefiguur te schilderen die hij op de markt kon verkopen."
+  - Vrouw in haar toilet met bediende, 1678  Frans van Mieris
+  - "Vanaf 1640 werden zwarte bedienden anders geschilderd, ze kregen andere rollen.
+    Ze werden nu vaak geassocieerd met \xE9\xE9n witte hoofdfiguur en ze waren actief.
+    Ze hielden een paard of een spiegel vast om te helpen bij het aankleden van een
+    blanke vrouw. Ze stonden niet meer vooraan, maar opzij of op de achtergrond.
+    Ze waren kleiner dan de hoofdpersoon. Zo kon de schilder de hoofdfiguur belangrijker
+    laten lijken."
+  - Man met tulband, ca. 1627-1629
+  - Lievens maakte deze tekening in Leiden toen hij nauw samenwerkte met zijn vriend
+    Rembrandt. Het individuele uiterlijk maakt duidelijk dat hier iemand model heeft
+    gezeten. Maar dat model is vervolgens uitgedost met een tulband en een veer,
+    waardoor hij een mediterraan type is geworden
+  - 'Portret van een meisje, 1645  Wenzel Hollar '
+  - Drie zeldzame portretetsen van zwarte mensen. Zij dragen gewone 17de-eeuwse kleding
+    van de middenklasse. Hollar maakte deze portretten in Antwerpen, zoals het opschrift
+    bij het meisje duidelijk maakt. De prenten waren bedoeld voor de verkoop. Met
+    de geslaagde weergave van een zwarte huid in de etstechniek, toonde de kunstenaar
+    zijn vaardigheid . Dat viel in de smaak bij verzamelaars.
+  - Portrait van een man, c. 1660-1675  Wallerant Vaillant
+  - Vaillant heeft deze man heel levensecht weergegeven met een individueel uiterlijk
+    . Toch lijkt ook deze prent geen opdracht van de geportretteerde, maar gemaakt
+    voor de verkoop aan verzamelaars. Vaillant was een expert in de mezzotint, een
+    techniek om prenten te maken in verschillende tinten zwart. Die techniek was
+    natuurlijk ook heel geschikt om de donkere huid mee weer te geven.
+  - Two Afrikaanse Mannen, 1661  Rembrandt
+  - "Het lijkt logisch dat hier twee zwarte buurtgenoten van Rembrandt model zaten.
+    Maar het schilderij draagt het jaartal 1661. Rembrandt woonde toen aan de andere
+    kant van Amsterdam, op de Rozengracht. Toch blijkt uit documenten dat hij op
+    de Jodenbreestraat ook al een schilderij van twee zwarte mannen had gemaakt.
+    Waren er meerdere schilderijen met dit onderwerp? Of heeft Rembrandt het eerste
+    schilderij pas na een paar jaar voltooid en gedateerd?  Zeldzaam is ook dat Rembrandt
+    de nauwe band tussen de  mannen in beeld bracht. Waren het vrienden? Of broers
+    misschien?  Het blijft speculatie, maar stel de modellen waren broers en stel 
+    ze kwamen uit de buurt, dan zouden Bastiaan en Manuel Fernando  in aanmerking
+    kunnen komen. Zij waren zeelieden, afkomstig  van het eiland S\xE3o Tom\xE9,
+    begin twintig en woonden op het einde  van de straat bij de Sint Antoniespoort."
+  - Tronie van een jongen met een tulband, ca. 1635  Gerrit Dou
+  - Dou was de eerste leerling van Rembrandt. Hij nam van hem het idee over om zwarte
+    mensen te bestuderen. Dat leidde tot deze aandoenlijke tronie van een jongeman
+    in een fantasiekostuum, die ons over zijn schouder aankijkt.
+  - Koning Caspar, 1654   Hendrick Heerschop
+  - Een van de drie koningen die het Christuskind komen aanbidden, zou volgens de
+    legende een Afrikaan zijn. Soms wordt hij Caspar genoemd, soms Balthasar. Heerschop
+    schilderde hem, zonder omgeving en verhaal. Hij is alleen te herkennen aan zijn
+    kostbare kleding en de pot met de wierook die hij schonk. Maar de  meeste aandacht
+    trekt het gezicht van de man, die ons trots en zelfverzekerd aankijkt.
+  - Hier en nu
+  - "In de hedendaagse kunst speelt zwart een heel andere rol dan in Rembrandts tijd.
+    In 17de-eeuwse kunstwerken zien we zwarte mensen door de ogen van witte kunstenaars
+    en weten we niet wie de modellen zijn. Nu zijn er zwarte kunstenaars die reflecteren
+    op hun eigen identiteit, realiteit en omgeving. En als er zwarte mensen zijn
+    afgebeeld weten we wie het zijn. Van beide kanten is er nu zeggenschap, van maker
+    en geportretteerde. Nog sterker dan in het verleden geldt dat zwarte mensen aanwezig
+    zijn, hier, in de maatschappij \xE9n in de kunst."
+  - "The Unspoken Truth, 2019  DION ROSINA  Voor dit schilderij gebruikte Dion Rosina
+    een 19de-eeuwse foto van een tot slaafgemaakte man in Brazili\xEB. De opening
+    verwijst naar het koloniale verleden van Nederland in Brazili\xEB. Een onderwerp
+    dat een hiaat is in ons collectieve geheugen. Het verleden is achter de opening,
+    maar dwingt zich tegelijkertijd via de man op aan de toeschouwer."
+  - "The New Utopia Begins Here: Hermina Huiswoud, 2019   IRIS KENSMIL   Kensmil
+    vestigt met haar portretten de aandacht op zwarte mensen die een belangrijke
+    rol speelden in de geschiedenis. Hermina Huiswoud (1905 \u2013 1998) was een
+    politieke activiste. Ze behoorde tot een generatie antikoloniale denkers, leiders
+    en organisatoren die actief waren in de strijd tegen Europees en Amerikaans imperialisme.
+    Na de Tweede Wereldoorlog werkte zij in Amsterdam en streed zij vanuit de Vereniging
+    Ons Suriname (VOS) voor de onafhankelijkheid van Suriname."
+  - Ilona, 2019  HEDY TJIN  Hedy Tjin is illustratief vormgever. In haar werk komt
+    haar fascinatie voor patronen en designs tot uiting, maar ook de invloed van
+    culturele en etnische onderwerpen. Haar liefde voor werken met viltstift wordt
+    gedreven door de vrijheid om overal en elk moment te kunnen tekenen. Daardoor
+    werkt het vaak therapeutisch. Dierbaren en momentopnamen legt zij vast. Helaas
+    is haar tante Ilona pas laat in haar leven gekomen en te vroeg weer weggegaan.
+  - "Doritos, 2019  IRI\xC9E ZAMBL\xC9  Een vrouw die met een zak zoutjes op de bank
+    zit. Ook in alledaags situaties zijn zwarte mensen nu in de kunst gerepresenteerd.
+    De kunstenares Iri\xE9e Zambl\xE9 zegt er zelf over: \u2018De mensen die mij
+    dagelijks passeren, zie ik nog niet genoeg in de beeldende kunst terug. Daarom
+    voel ik een drang om hen vast te leggen in mijn schilderijen.\u2019"
+  - "Hollandse Meesters Her-Zien: Debora Nassy, 2020 CIGDEM YUKSEL (fotografie),
+    J\xD6RGEN TJON A FONG (concept)  Debora Nassy was een vrouw van kleur die in
+    Amsterdam als bediende werkte. Toen zij op het punt stond naar Guyana te vertrekken,
+    bezocht zij een notaris om te voorkomen dat zij overzee tot slaaf gemaakt zou
+    kunnen worden. De Joods-  Portugese David Nassy verklaarde daarom dat Debora
+    \u2013 \u2018een bruijn vrouwspersoon ofte mulata\u2019 \u2013 in zijn huis in
+    vrijheid was geboren en als zodanig was opgevoed."
+  - Uitgang

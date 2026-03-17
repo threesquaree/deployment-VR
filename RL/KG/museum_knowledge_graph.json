@@ -1,0 +1,239 @@
+{
+  "exhibits": {
+    "King_Caspar": {
+      "object_name": "C6",
+      "painting_name": "The African King Caspar",
+      "year": "1654",
+      "artist": "Hendrick Heerschop",
+      "location": "Gemäldegalerie, Berlin",
+      "style": "Oil on panel",
+      "description": "The painting represents one of the three magi who came to worship the Christ child.",
+      "more_info": "King Caspar depicts the Biblical King from the Adoration of the Magi holding his gift of frankincense in a precious vessel.",
+      "aois": [
+        "King Caspar",
+        "Incense Pot",
+        "Necklace",
+        "Earring",
+        "Ring",
+        "Doublet",
+        "Gemstones"
+      ]
+    },
+    "Turban": {
+      "object_name": "C5",
+      "painting_name": "Head of a Boy in a Turban",
+      "year": "1635",
+      "artist": "Gerrit Dou",
+      "location": "Hannover, Landesmuseum",
+      "style": "Oil on panel",
+      "description": "The painting depicts an endearing tronie of a young boy dressed in a fantasy costume, who looks at us over his shoulder.",
+      "more_info": "Dou was Rembrandt's first pupil and took up his master's idea of studying black people.",
+      "aois": [
+        "Turban",
+        "White ostrich feather",
+        "Blue garment",
+        "Young boy"
+      ]
+    },
+    "Dom_Miguel": {
+      "object_name": "B2",
+      "painting_name": "Portrait of Dom Miguel de Castro",
+      "year": "1643",
+      "artist": "Jeronimus Beckx",
+      "location": "Statensmuseum for Kunst, Copenhagen",
+      "style": "Oil on panel",
+      "description": "Dom Miguel de Castro makes here a powerful, serious expression. He was a member of the Congolese elite.",
+      "more_info": "This portrait was commissioned by the Dutch West India Company during his two week stay in Middelburg.",
+      "aois": [
+        "Red ostrich feather",
+        "Cavalier hat",
+        "Gilt garment",
+        "Dom Miguel"
+      ]
+    },
+    "Pedro_Sunda": {
+      "object_name": "B3",
+      "painting_name": "Portrait of Pedro Sunda",
+      "year": "1643",
+      "artist": "Jeronimus Beckx",
+      "location": "Statensmuseum for Kunst, Copenhagen",
+      "style": "Oil on panel",
+      "description": "Pedro Sunda holds an elephant's tusk. Ivory was one of the Congo's major export products.",
+      "more_info": "The status of these young men is unclear. Were they assistants of the noble Dom Miguel or were they enslaved?",
+      "aois": [
+        "Ivory tusk",
+        "Pedro Sunda",
+        "Cloth"
+      ]
+    },
+    "Diego_Bemba": {
+      "object_name": "B1",
+      "painting_name": "Portrait of Diego Bemba",
+      "year": "1643",
+      "artist": "Jeronimus Beckx",
+      "location": "Statensmuseum for Kunst, Copenhagen",
+      "style": "Oil on panel",
+      "description": "Diego Bemba holds a small casket, probably a diplomatic gift. He was one of Don Miguel de Castro's servants.",
+      "more_info": "His eyes are turned upwards as if he were addressing or giving thanks to God, suggesting the box contains something holy.",
+      "aois": [
+        "Box",
+        "Diego Bemba",
+        "Clothes"
+      ]
+    }
+  },
+  "aois": {
+    "King Caspar": {
+      "name": "King Caspar",
+      "description": "One of the three magi who came to worship the Christ child. The three magi visited Jesus bearing precious gifts."
+    },
+    "Incense Pot": {
+      "name": "Incense Pot",
+      "description": "The golden pot represents an incense pot, a gift for Jesus. Frankincense embodied Jesus' deity."
+    },
+    "Necklace": {
+      "name": "Necklace",
+      "description": "Golden necklace representing high power and status. The 17th century was the age of elegance for accessories."
+    },
+    "Earring": {
+      "name": "Earring",
+      "description": "Golden earring representing high power and status of the wearer."
+    },
+    "Ring": {
+      "name": "Ring",
+      "description": "Finely carved ring worn by nobles. Carefully selected statement pieces showed taste in the 17th century."
+    },
+    "Doublet": {
+      "name": "Doublet",
+      "description": "Yellow doublet paired with an intricately detailed and jewelled cloak. A form-fitted waist length jacket."
+    },
+    "Gemstones": {
+      "name": "Gemstones",
+      "description": "Due to expanding global trade in the 17th century, gemstones became more available and were used extensively."
+    },
+    "Turban": {
+      "name": "Turban",
+      "description": "A type of headwear constructed by winding cloth, made from strong fabrics like cotton."
+    },
+    "White ostrich feather": {
+      "name": "White ostrich feather",
+      "description": "Decoration on the turban. A white feather is seen as a sign of hope or peace in many cultures."
+    },
+    "Blue garment": {
+      "name": "Blue garment",
+      "description": "Fantasy costume with 17th century elements. Blue was the most lavish pigment, representing power and royalty."
+    },
+    "Young boy": {
+      "name": "Young boy",
+      "description": "An endearing tronie of a young boy in fantasy costume looking over his shoulder at the viewer."
+    },
+    "Red ostrich feather": {
+      "name": "Red ostrich feather",
+      "description": "Symbol of elegance and luxurious extravagance. Red was associated with wealth and power."
+    },
+    "Cavalier hat": {
+      "name": "Cavalier hat",
+      "description": "Wide-brimmed hat from the 17th century, often made from felt and accentuated with ostrich feathers."
+    },
+    "Gilt garment": {
+      "name": "Gilt garment",
+      "description": "Ornately decorated with silver gilt embroidery using metal threads, symbolizing wealth and elegance."
+    },
+    "Dom Miguel": {
+      "name": "Dom Miguel",
+      "description": "Dom Miguel de Castro, a member of the Congolese elite with a powerful, serious expression."
+    },
+    "Ivory tusk": {
+      "name": "Ivory tusk",
+      "description": "Elephant tusk held by Pedro Sunda. Ivory was valuable due to its beauty and durability, representing strength and power."
+    },
+    "Pedro Sunda": {
+      "name": "Pedro Sunda",
+      "description": "Servant of the Congolese envoy Don Miguel de Castro. Portraits of named servants from Africa are rare."
+    },
+    "Cloth": {
+      "name": "Cloth",
+      "description": "Green velvet suit with golden ribbons and buttons. Dressed according to European fashion of the 1640s."
+    },
+    "Box": {
+      "name": "Box",
+      "description": "Small decorative casket assumed to be a diplomatic gift, more than functional packaging with artistic elements."
+    },
+    "Diego Bemba": {
+      "name": "Diego Bemba",
+      "description": "One of Don Miguel de Castro's servants, pointing at the box with his eyes turned upward."
+    },
+    "Clothes": {
+      "name": "Clothes",
+      "description": "Same type of European fashion as Pedro Sunda, body turned slightly to the right in framing shadows."
+    }
+  },
+  "exhibit_aoi_mapping": {
+    "King_Caspar": [
+      "King Caspar",
+      "Incense Pot",
+      "Necklace",
+      "Earring",
+      "Ring",
+      "Doublet",
+      "Gemstones"
+    ],
+    "Turban": [
+      "Turban",
+      "White ostrich feather",
+      "Blue garment",
+      "Young boy"
+    ],
+    "Dom_Miguel": [
+      "Red ostrich feather",
+      "Cavalier hat",
+      "Gilt garment",
+      "Dom Miguel"
+    ],
+    "Pedro_Sunda": [
+      "Ivory tusk",
+      "Pedro Sunda",
+      "Cloth"
+    ],
+    "Diego_Bemba": [
+      "Box",
+      "Diego Bemba",
+      "Clothes"
+    ]
+  },
+  "summary": {
+    "total_exhibits": 5,
+    "total_aois": 21,
+    "exhibit_names": [
+      "King_Caspar",
+      "Turban",
+      "Dom_Miguel",
+      "Pedro_Sunda",
+      "Diego_Bemba"
+    ],
+    "aoi_names": [
+      "King Caspar",
+      "Incense Pot",
+      "Necklace",
+      "Earring",
+      "Ring",
+      "Doublet",
+      "Gemstones",
+      "Turban",
+      "White ostrich feather",
+      "Blue garment",
+      "Young boy",
+      "Red ostrich feather",
+      "Cavalier hat",
+      "Gilt garment",
+      "Dom Miguel",
+      "Ivory tusk",
+      "Pedro Sunda",
+      "Cloth",
+      "Box",
+      "Diego Bemba",
+      "Clothes"
+    ],
+    "source": "Original Museum Structure"
+  }
+}

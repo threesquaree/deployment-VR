@@ -1,0 +1,11 @@
+{
+  "model_name": "H3_SMDP_StateMachine",
+  "checkpoint_path": "C:/Users/Vrmuseum/Desktop/Research/RL/H3_SMDP_StateMachine.pt",
+  "knowledge_graph_path": "C:/Users/Vrmuseum/Desktop/Research/RL/KG/museum_knowledge_graph.json",
+  "mapping_path": "C:/Users/Vrmuseum/Desktop/Research/RL/KG/neo4j_to_rl_mapping.json",
+  "device": "cpu",
+  "openai_model": "gpt-4o-mini",
+  "log_dir": "C:/Users/Vrmuseum/Desktop/Research/RL/logs",
+  "tts_enabled": true,
+  "tts_rate": 180
+}

@@ -1,0 +1,39 @@
+# Python virtual environments
+**/.venv/
+**/venv/
+**/__pycache__/
+**/*.pyc
+
+# Local environment files
+**/.env
+
+# Logs and caches
+**/*.log
+**/*.db
+**/*.sqlite
+CA/original/.rasa/
+CA/original/logs/
+RL/logs/
+debug_logs/
+
+# Model artifacts
+**/*.pt
+**/*.pth
+**/*.ckpt
+CA/original/models/*.tar.gz
+
+# Unity / Visual Studio generated files
+VR_RCEA/VR/.vs/
+VR_RCEA/VR/Library/
+VR_RCEA/VR/Logs/
+VR_RCEA/VR/obj/
+VR_RCEA/VR/UserSettings/
+VR_RCEA/VR/*.csproj
+VR_RCEA/VR/*.sln
+
+# Experiment outputs
+VR_RCEA/VR/Assets/OUTPUT/
+
+# Local papers and raw source assets
+paper/
+VR_RCEA/VR/Assets/HERE/Paintings (Raw)/
