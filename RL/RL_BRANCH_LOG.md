@@ -248,3 +248,314 @@ Validation:
 
 Operational note:
 - Restart the FastAPI runtime after this code change before retesting.
+
+## 2026-03-18 - Active RL Model Switched to Centred Engagement + Broadened Novelty Checkpoint
+
+Author: Codex
+
+Summary:
+- Updated the active runtime checkpoint in `runtime_config.json` from the previously used `H3_MDP_StateMachine.pt` to `H1_MDP_StateMachine_CentredEng_BroadNov.pt`.
+- The new checkpoint keeps the baseline reward structure (`reward_mode = baseline`, `w_engagement = 1.0`, `w_responsiveness = 0.5`, `w_conclude = 0.4`) but adds two reward refinements:
+  - centred engagement: reward is based on `dwell_t - EMA(dwell)` rather than raw dwell alone
+  - broadened novelty: novelty credit now extends beyond `ExplainNewFact` to include repetition, clarification, and question-asking with a staleness penalty once content is exhausted
+
+Impact scope:
+- RL runtime only.
+- No baseline route changes.
+
+Validation:
+- Active runtime sessions after the config update report `model_name = H1_MDP_StateMachine_CentredEng_BroadNov` in session summaries.
+- Online Unity tests after restart produced valid `TurnResponse` records under the new checkpoint.
+
+Operational note:
+- Switching exported RL agents still requires editing `runtime_config.json` and restarting the FastAPI runtime.
+
+## 2026-03-18 - Automatic Prompting Delayed Until First Successful RL Exchange
+
+Author: Codex
+
+Summary:
+- Updated periodic RL prompting in `GetEyeData.cs` so prompt timing does not begin at scene entry.
+- The periodic prompt schedule is now armed only after the user completes a first successful RL turn and Unity receives a valid `/turn` response.
+
+Impact scope:
+- RL route only.
+- Baseline route behavior remains unchanged.
+
+Validation:
+- The RL branch no longer auto-speaks immediately on session start.
+- Periodic prompting begins only after the first confirmed RL response has been received.
+
+## 2026-03-18 - Local TTS Changed to Per-Utterance Engine Initialization
+
+Author: Codex
+
+Summary:
+- Updated `LocalTTS` in `runtime_service/service.py` to stop reusing one long-lived `pyttsx3` engine across the whole runtime process.
+- Each queued utterance now initializes its own `pyttsx3` engine, sets rate, speaks once, and then discards that engine.
+
+Why this change was made:
+- Live testing showed a pattern where the first spoken turn was audible but a later turn could be logged as spoken without being heard.
+- Manual one-shot `pyttsx3` tests remained stable, suggesting that engine reuse inside the long-running runtime process was the more likely instability source.
+
+Impact scope:
+- RL runtime only.
+- No Unity-side API changes.
+
+Validation:
+- Runtime-side local TTS still logs `queued`, `speaking`, and `finished` events after the change.
+- The implementation now matches the per-run initialization pattern that succeeded in direct terminal smoke tests.
+
+## 2026-03-18 - User-Facing Reply Text Decoupled from Internal Fact Tag Tracking
+
+Author: Codex
+
+Summary:
+- Updated runtime reply handling so fact-tagged raw model output is preserved for internal state tracking, while user-facing reply text is cleaned before being returned to Unity or spoken via local TTS.
+- Bracketed fact IDs such as `[KC_001]` are removed from `reply_text` and from spoken output, but retained in `debug.raw_reply_text`.
+
+Impact scope:
+- RL runtime only.
+- Fact counting, coverage tracking, and downstream analysis remain based on the raw fact-tagged output.
+
+Validation:
+- Runtime continues to extract and record mentioned fact IDs in `facts_mentioned_snapshot`.
+- User-facing reply text no longer needs to expose or vocalize fact markers.
+
+## 2026-03-25 - Explicit `NONE` Focus State Added to RL Gaze Handling
+
+Author: Codex
+
+Summary:
+- Updated Unity-side RL focus handling in `GetEyeData.cs` so unsupported or absent gaze targets can resolve to an explicit `NONE` state rather than only decaying into empty focus.
+- The focus timing policy is now:
+  - enter painting after `0.5s` of stable supported focus
+  - keep recent raw supported focus for `1.0s`
+  - enter `NONE` after `2.0s` without supported focus
+- Updated runtime handling so `NONE` is treated as an explicit no-focus signal, while an empty `current_object_name` still means temporary missing data and may fall back to the session's previous exhibit.
+
+Impact scope:
+- RL route only.
+- No baseline route behavior changes.
+
+Validation:
+- Unity now emits `NONE` from `GetPreferredCurrentObjectName()` once unsupported focus persists beyond the configured threshold.
+- Runtime `_resolve_current_exhibit()` distinguishes `NONE` from an empty string and no longer collapses both cases into previous-exhibit fallback.
+
+Operational note:
+- This change preserves no-focus information in the RL path, but the current question-routing design may still choose not to use gaze as a first-layer routing signal.
+
+## 2026-03-25 - Automatic RL Prompting Disabled After Verifying Branch Behavior
+
+Author: Codex
+
+Summary:
+- Reviewed automatic `prompting_user` behavior across the baseline CA route and the RL route.
+- Confirmed that the baseline CA side still contains `prompting_user` rules and proactive guide logic, but does not currently arm periodic prompting automatically in the active Unity flow.
+- Confirmed that the RL route was the only path still arming periodic prompting in the active branch.
+- Added `enablePeriodicPrompting = false` in `GetEyeData.cs` so RL no longer auto-sends periodic `prompting_user` turns.
+
+Impact scope:
+- RL route only.
+- Baseline route remains functionally unchanged.
+
+Validation:
+- The active Unity RL path now guards both prompt scheduling and prompt firing behind `enablePeriodicPrompting`.
+- RL no longer auto-prompts after the first successful turn unless periodic prompting is explicitly re-enabled in code or inspector configuration.
+
+Operational note:
+- The CA branch still retains legacy `prompting_user` rules and guide actions for compatibility, but they are not currently the source of automatic periodic prompting in the active setup.
+
+## 2026-03-25 - Auxiliary Exhibit Context Added Without Changing Formal Fact Tracking
+
+Author: Codex
+
+Summary:
+- Added a separate auxiliary exhibit context layer for RL prompt generation.
+- Kept the formal fact system unchanged: tracked facts, fact IDs, `facts_mentioned`, and coverage counting still use only the existing five formal exhibit facts.
+- Updated `knowledge_graph.py` and `rl_runtime.py` so the prompt builder now receives the current painting's `painting_name`, `object_name`, and AOI-level descriptions as non-tracked reference context.
+- Updated `dialogue_planner.py` so this auxiliary context is exposed to the LLM as reference-only context and explicitly does not create new tracked fact IDs.
+
+Impact scope:
+- RL runtime prompt-generation layer only.
+- RL policy selection, state construction, action selection, and formal fact coverage accounting remain unchanged.
+
+Validation:
+- `python -m py_compile` passed for `src/utils/knowledge_graph.py`, `src/utils/dialogue_planner.py`, and `inference/rl_runtime.py`.
+- Runtime-side smoke check confirmed that `get_auxiliary_context(...)` returns painting title, object name, and AOI descriptions for supported exhibits.
+
+Operational note:
+- Auxiliary exhibit context is intended to improve local visual-detail answers such as held objects, clothing, hats, and ornaments without inflating `facts_mentioned` or altering thesis-side coverage metrics.
+
+## 2026-04-02 - RL Prompt Stack Modularized with Unified Base Prompt
+
+Author: Codex
+
+Summary:
+- Refactored RL prompt construction into a unified base prompt plus per-subaction prompt modules.
+- Added `prompt/base_prompt.py` as the shared prompt skeleton, including `[System Role]`, `[RL Guidance]`, `[Current Context]`, `[User Input]`, and response constraints.
+- Updated `src/utils/dialogue_planner.py` to route subactions to dedicated files under `RL/prompt/`.
+- Kept action descriptions centralized in `prompt/action_descriptions.py` and aligned with the active checkpoint action space.
+
+Impact scope:
+- RL runtime prompt-generation path only.
+- Baseline CA path remains unchanged.
+
+Validation:
+- `python -m py_compile` passed for `src/utils/dialogue_planner.py` and prompt modules.
+- Runtime still returns prompt-driven responses with preserved action metadata.
+
+## 2026-04-02 - Explain/Repeat Fact Relevance Selection Added
+
+Author: Codex
+
+Summary:
+- Added relevance-based fact selection for `ExplainNewFact` and `RepeatFact` via `prompt/fact_selector.py`.
+- Implemented threshold policy (`t_low`, `t_high`) so low-confidence turns do not force fact insertion.
+- Added structured selection metadata outputs (`selected_fact_ids`, `top_score`, low-confidence flags) for downstream analysis.
+
+Impact scope:
+- RL explanation strategy prompting only.
+- No changes to baseline CA path.
+
+Validation:
+- `python -m py_compile` passed for `prompt/fact_selector.py`, `prompt/ExplainNewFacts.py`, and `prompt/RepeatFact.py`.
+- Runtime prompt generation now includes threshold-conditioned behavior for explain/repeat paths.
+
+## 2026-04-02 - Judge + One-Shot Revision Pipeline Added (GPT-5.4)
+
+Author: Codex
+
+Summary:
+- Added a verifier pass after draft generation in RL runtime.
+- New modules:
+  - `prompt/judge.py` (verifier prompt)
+  - `prompt/judge_schema.py` (JSON parsing and validation)
+  - `prompt/revise.py` (single-pass revision prompt)
+- Extended `prompt/openai_generator.py` with:
+  - `generate_judge_json(...)`
+  - `generate_revision_text(...)`
+- Updated `inference/rl_runtime.py` to run:
+  - draft generation
+  - judge scoring
+  - at most one revision when `action_alignment==0` or `language_consistency==0`
+
+Impact scope:
+- RL runtime generation path only.
+- Baseline CA path remains unchanged.
+
+Validation:
+- `python -m py_compile` passed for new prompt modules and updated runtime files.
+- Runtime now returns final response after judge gate with at-most-once revision behavior.
+
+## 2026-04-02 - Runtime Config Updated for Judge Controls and H1 Checkpoint
+
+Author: Codex
+
+Summary:
+- Updated `runtime_config.json` with:
+  - `judge_enabled: true`
+  - `judge_fail_policy: "pass"`
+- Switched active RL checkpoint to:
+  - `H1_MDP_Sim8_CentredEng_BroadNov_RespType.pt`
+- Updated `model_name` to:
+  - `H1_MDP_Sim8_CentredEng_BroadNov_RespType`
+
+Impact scope:
+- RL runtime configuration only.
+- Requires runtime restart to take effect.
+
+Validation:
+- Config file readback confirms updated checkpoint path and model name.
+
+## 2026-04-02 - ExplainNewFact Selection Logic Expanded and Two-Fact High-Confidence Mode Enabled
+
+Author: Codex
+
+Summary:
+- Updated `prompt/fact_selector.py`, `prompt/ExplainNewFacts.py`, and `src/utils/dialogue_planner.py` to expand `ExplainNewFact` behavior.
+- `ExplainNewFact` now uses three effective cases:
+  - `new_facts` empty -> answer directly and lightly suggest another exhibit
+  - at least two facts above `t_high` -> allow `top1 + top2`
+  - all other cases -> always use `top1`
+- Low-confidence explain turns no longer suppress fact use; they now follow a fixed two-sentence pattern:
+  - sentence 1 answers the user briefly
+  - sentence 2 adds the most relevant selected fact
+  - prompt explicitly requires the two sentences to connect naturally
+- Enabled `allow_top2_high = true` in the live explain prompt route.
+- Added new explain metadata fields:
+  - `second_score`
+  - `selection_mode`
+
+Impact scope:
+- RL explanation prompt generation only.
+- No baseline CA path changes.
+
+Validation:
+- `python -m py_compile` passed for `prompt/fact_selector.py`, `prompt/ExplainNewFacts.py`, and `src/utils/dialogue_planner.py`.
+- Runtime logs now show `selection_mode` values such as `single_top1_low` and `high_two`, and two-fact explain turns can be observed when two scores exceed `t_high`.
+
+## 2026-04-02 - Fact Realization Tracking Moved to Judge Output
+
+Author: Codex
+
+Summary:
+- Extended the RL judge path so fact usage is no longer inferred only from visible `[FACT_ID]` markers in final text.
+- Updated:
+  - `prompt/judge.py`
+  - `prompt/judge_schema.py`
+  - `inference/rl_runtime.py`
+  - `runtime_service/service.py`
+- Judge now outputs `realized_fact_ids`.
+- Only `ExplainNewFact` and `RepeatFact` are treated as fact-bearing actions.
+- Runtime fact usage and coverage updates now use judge-confirmed `realized_fact_ids`.
+- If a revision occurs, the system re-judges the revised response and uses the final judge result as the source of truth.
+
+Impact scope:
+- RL runtime logging and fact-accounting path only.
+- Baseline CA path remains unchanged.
+
+Validation:
+- `python -m py_compile` passed for judge modules, runtime, and service.
+- Runtime session logs now record both `selected_fact_ids` and `realized_fact_ids` in `judge.jsonl` and `generation_trace.jsonl`.
+- Coverage updates were confirmed to follow realized facts rather than only visible raw text markers.
+
+## 2026-04-02 - Interaction Log `action_label` Changed to Full Action String
+
+Author: Codex
+
+Summary:
+- Updated `runtime_service/service.py` so `action_label` now stores the full action string rather than only the coarse option.
+- The log now records values such as `Explain/ExplainNewFact` in `action_label`.
+- Existing `option` and `subaction` fields remain unchanged.
+
+Impact scope:
+- RL interaction logging only.
+- No prompt-generation or policy-selection changes.
+
+Validation:
+- `python -m py_compile runtime_service/service.py` passed.
+- New interaction logs now preserve a non-redundant action label that matches the selected action string.
+
+## 2026-04-02 - Unity AOI Parsing Extended Beyond Legacy `_AoI_` Names
+
+Author: Codex
+
+Summary:
+- Updated `VR_RCEA/VR/Assets/MyScripts/GetEyeData.cs` so Unity RL AOI parsing no longer depends only on the legacy `_AoI_` naming pattern.
+- Added support for scene object names already present in the active scene, such as:
+  - `B1_Box`
+  - `B2_Gilt garment`
+  - `C6_Ring`
+- Added filtering so non-AOI targets are not misclassified, including:
+  - `Painting`
+  - `Text`
+  - painting-identity names such as `Dom Miguel`
+
+Impact scope:
+- Unity RL gaze-to-AOI extraction only.
+- Baseline CA prompt path and RL runtime mapping remain unchanged.
+
+Validation:
+- Text-level inspection confirmed the new extraction path is used at both AOI parsing sites in `GetEyeData.cs`.
+- Scene inspection showed that the active Unity scene contains AOI-like object names in the `B1/B2/C6` style rather than relying consistently on `_AoI_` suffixes.

@@ -40,9 +40,9 @@ public class RecordingReplay : MonoBehaviour
     {
         dropdown.ClearOptions();
         var info = new DirectoryInfo(GetEyeData.getPath(""));
-        files = info.GetFiles().Where(x => x.Extension == ".csv" && !x.Name.Contains("_Recording") && !x.Name.Contains("_Heatmaps")).ToArray();
+        files = info.GetFiles("gaze_90hz.csv", SearchOption.AllDirectories);
 
-        dropdown.AddOptions(files.Select(x => x.Name).ToList());
+        dropdown.AddOptions(files.Select(x => $"{x.Directory?.Name}/{x.Name}").ToList());
     }
 
     private void OnDrag(PointerEventData obj)
@@ -66,7 +66,11 @@ public class RecordingReplay : MonoBehaviour
     {
         print(file);
         using StreamReader reader = new StreamReader(file);
-        StartCoroutine(LoadAudioFile(file.Replace(".csv", "_Recording.wav")));
+        string directory = Path.GetDirectoryName(file);
+        string audioPath = Path.Combine(directory ?? string.Empty, "audio.wav");
+        if (!File.Exists(audioPath))
+            audioPath = file.Replace(".csv", "_Recording.wav");
+        StartCoroutine(LoadAudioFile(audioPath));
         string line;
         //Define pattern
         map = new SortedDictionary<float, Record>();

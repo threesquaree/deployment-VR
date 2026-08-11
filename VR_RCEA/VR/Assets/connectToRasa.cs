@@ -29,8 +29,17 @@ public class connectToRasa : MonoBehaviour
 	private bool isUserSpeaking;
 	private bool isDictationRunning;
 
+	// Windows SAPI allows only ONE DictationRecognizer per process. This legacy
+	// script is attached to 15 (currently inactive) -CA GameObjects; if any of
+	// them were ever activated it would construct a second recognizer and fight
+	// the main speech path for the device. Disabled by default -- speech now goes
+	// through WhisperSpeechCapture via RasaCommunication/RLCommunication.
+	[SerializeField] private bool enableLegacyDictation = false;
+
 	void Update()
 	{
+		if (!enableLegacyDictation) return;
+
 		// Replace "Fire1" with the appropriate input axis/button for the lower button of your controller.
 		if (Input.GetButtonDown("TriggerButton"))
 		{
@@ -104,6 +113,14 @@ public class connectToRasa : MonoBehaviour
 
 	public void StartDictationEngine()
 	{
+		// Public, so a UnityEvent in the scene could still reach it -- guard here
+		// as well as in Update().
+		if (!enableLegacyDictation)
+		{
+			Debug.LogWarning("connectToRasa legacy dictation is disabled (speech goes through WhisperSpeechCapture).");
+			return;
+		}
+
 		if (isDictationRunning)
 		{
 			Debug.LogWarning("Dictation engine is already running.");

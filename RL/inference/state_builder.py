@@ -8,13 +8,13 @@ import numpy as np
 import sys
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
-from collections import defaultdict
 
 # Add parent directory to path to import src modules
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.utils.dialoguebert_intent_recognizer import get_dialoguebert_recognizer
 from src.utils.knowledge_graph import SimpleKnowledgeGraph
+from inference.response_type_provider import RESPONSE_TYPE_LABELS
 
 
 def get_projection_matrix() -> np.ndarray:
@@ -181,6 +181,20 @@ def _build_subaction_availability(
     return availability
 
 
+def _build_response_type_onehot(
+    response_type: Optional[str],
+    labels: Optional[List[str]] = None,
+) -> np.ndarray:
+    active_labels = labels or RESPONSE_TYPE_LABELS
+    onehot = np.zeros(len(active_labels), dtype=np.float32)
+    label = (response_type or "").strip()
+    if label in active_labels:
+        onehot[active_labels.index(label)] = 1.0
+        return onehot
+    onehot[active_labels.index("statement")] = 1.0
+    return onehot
+
+
 def build_state(
     user_message: str,
     exhibit: str,
@@ -192,7 +206,9 @@ def build_state(
     turn_number: int,
     projection_matrix: Optional[np.ndarray] = None,
     bert_recognizer = None,
-    include_availability: bool = False
+    include_availability: bool = False,
+    include_response_type: bool = False,
+    response_type: Optional[str] = None,
 ) -> np.ndarray:
     """
     Build complete state vector for inference.
@@ -203,6 +219,7 @@ def build_state(
     3. Intent embedding: 64-d (DialogueBERT 768→64 projection)
     4. Context embedding: 64-d (DialogueBERT 768→64 projection)
     5. Subaction availability: 4-d binary indicators
+    6. Response type one-hot: 6-d categorical indicators
     
     Args:
         user_message: User's current utterance
@@ -249,6 +266,9 @@ def build_state(
     if include_availability:
         availability = _build_subaction_availability(exhibit, knowledge_graph, facts_mentioned)
         state_components.append(availability)
+
+    if include_response_type:
+        state_components.append(_build_response_type_onehot(response_type))
     
     # Concatenate into final state vector
     state = np.concatenate(state_components).astype(np.float32)

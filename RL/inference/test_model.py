@@ -18,6 +18,7 @@ sys.path.insert(0, str(inference_dir))
 
 from model_loader import load_model_checkpoint, create_agent_from_checkpoint
 from state_builder import build_state, get_projection_matrix
+from response_type_provider import RESPONSE_TYPE_LABELS
 from src.utils.knowledge_graph import SimpleKnowledgeGraph
 from src.utils.dialoguebert_intent_recognizer import get_dialoguebert_recognizer
 
@@ -154,7 +155,8 @@ def get_agent_response(
     turn_number: int,
     projection_matrix: np.ndarray,
     bert_recognizer,
-    state_dim: Optional[int] = None
+    state_dim: Optional[int] = None,
+    response_type: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Core inference function - get agent's action selection.
@@ -184,11 +186,12 @@ def get_agent_response(
     # Determine if we should include availability indicators
     # Models trained with state_dim=143 don't have them, models with state_dim=147 do
     include_availability = False
+    include_response_type = False
     if state_dim is not None:
-        # Calculate expected dimension without availability
         n_exhibits = len(knowledge_graph.get_exhibit_names())
         base_dim = (n_exhibits + 1) + (n_exhibits + len(options)) + 64 + 64
-        include_availability = (state_dim == base_dim + 4)
+        include_availability = state_dim in {base_dim + 4, base_dim + 4 + len(RESPONSE_TYPE_LABELS)}
+        include_response_type = state_dim == base_dim + 4 + len(RESPONSE_TYPE_LABELS)
     
     # Build state vector
     state_vector = build_state(
@@ -202,7 +205,9 @@ def get_agent_response(
         turn_number=turn_number,
         projection_matrix=projection_matrix,
         bert_recognizer=bert_recognizer,
-        include_availability=include_availability
+        include_availability=include_availability,
+        include_response_type=include_response_type,
+        response_type=response_type,
     )
     
     # Get available actions with masking

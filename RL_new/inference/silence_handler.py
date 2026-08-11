@@ -1,0 +1,100 @@
+"""
+Silence Handler for Inference-Time Visitor Silence Detection
+
+Detects prolonged visitor silence during live VR museum tours and returns
+a rule-based action override. See docs/superpowers/specs/2026-04-12-silence-handler-design.md.
+"""
+
+from dataclasses import dataclass
+from typing import Optional, Dict
+
+
+@dataclass
+class ConversationSnapshot:
+    last_agent_option: str
+    last_agent_subaction: str
+    facts_mentioned_count: int
+    total_facts_at_exhibit: int
+
+
+class SilenceHandler:
+    def __init__(self, threshold_sec: float = 40.0, max_triggers: int = 2):
+        self.threshold_sec = threshold_sec
+        self.max_triggers = max_triggers
+        self._last_visitor_time: Optional[float] = None
+        self._triggers_used: int = 0
+
+    def check(self, current_time: float, snapshot: ConversationSnapshot) -> Optional[Dict[str, str]]:
+        """Returns action dict {"option": ..., "subaction": ...} if silence triggered, else None."""
+        if self._last_visitor_time is None:
+            return None
+        if self._triggers_used >= self.max_triggers:
+            return None
+        elapsed = current_time - self._last_visitor_time
+        if elapsed < self.threshold_sec:
+            return None
+        return self.select_action(snapshot, triggers_used=self._triggers_used)
+
+    def select_action(
+        self,
+        snapshot: ConversationSnapshot,
+        triggers_used: Optional[int] = None,
+    ) -> Dict[str, str]:
+        """Select an action from the rule table for the given snapshot."""
+        original = self._triggers_used
+        if triggers_used is not None:
+            self._triggers_used = triggers_used
+        try:
+            return self._select_action(snapshot)
+        finally:
+            self._triggers_used = original
+
+    def _select_action(self, snapshot: ConversationSnapshot) -> Dict[str, str]:
+        """State-dependent rule table. First matching rule wins."""
+        trigger_number = self._triggers_used + 1
+        has_current_exhibit = snapshot.total_facts_at_exhibit > 0
+        has_new_facts = snapshot.facts_mentioned_count < snapshot.total_facts_at_exhibit
+        exhibit_exhausted = (
+            has_current_exhibit
+            and snapshot.facts_mentioned_count >= snapshot.total_facts_at_exhibit
+        )
+
+        # Rule 0: No valid exhibit -> re-anchor with an open question.
+        # (deadend_fix_v1 action space has no AskClarification; AskOpinion is
+        # the closest valid re-prompt.)
+        if not has_current_exhibit:
+            return {"option": "AskQuestion", "subaction": "AskOpinion"}
+
+        # Rule 1: Second silence trigger — repeated silence signals a fading
+        # visitor, which is exactly what Engage/RecoverEngagement was trained
+        # for (light re-engagement, no new facts).
+        if trigger_number >= 2:
+            return {"option": "Engage", "subaction": "RecoverEngagement"}
+
+        # Rule 2: Was lecturing — flip to question
+        if snapshot.last_agent_option == "Explain":
+            return {"option": "AskQuestion", "subaction": "AskOpinion"}
+
+        # Rule 3: Already asked, got silence — try offering content
+        if snapshot.last_agent_option == "AskQuestion" and has_new_facts:
+            return {"option": "Explain", "subaction": "ExplainNewFact"}
+
+        # Rule 4: Nothing shared yet — start the conversation
+        if snapshot.facts_mentioned_count == 0 and has_new_facts:
+            return {"option": "Explain", "subaction": "ExplainNewFact"}
+
+        # Rule 5: Exhibit exhausted — suggest moving on
+        if exhibit_exhausted:
+            return {"option": "OfferTransition", "subaction": "SummarizeAndSuggest"}
+
+        # Rule 6: Fallback
+        return {"option": "AskQuestion", "subaction": "AskOpinion"}
+
+    def notify_visitor_spoke(self, current_time: float) -> None:
+        """Resets silence tracking when visitor provides input."""
+        self._last_visitor_time = current_time
+        self._triggers_used = 0
+
+    def notify_action_taken(self) -> None:
+        """Increments trigger counter after a silence-triggered action is executed."""
+        self._triggers_used += 1

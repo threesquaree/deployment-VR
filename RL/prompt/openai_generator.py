@@ -15,6 +15,22 @@ def _load_runtime_env() -> None:
     load_dotenv(override=True)
 
 
+def _make_client(api_key: str, timeout_sec: Optional[float]):
+    """Build an OpenAI-compatible client.
+
+    If a 'base_url' env var is set (e.g. https://openrouter.ai/api/v1), the
+    client is pointed at that endpoint; otherwise it uses the default OpenAI
+    endpoint. This keeps OpenAI behaviour unchanged while allowing
+    OpenAI-compatible providers such as OpenRouter.
+    """
+    from openai import OpenAI
+
+    base_url = os.getenv("base_url") or os.getenv("OPENAI_BASE_URL")
+    if base_url:
+        return OpenAI(api_key=api_key, base_url=base_url, timeout=timeout_sec)
+    return OpenAI(api_key=api_key, timeout=timeout_sec)
+
+
 def _system_prompt_for_subaction(subaction: str) -> str:
     if subaction == "ExplainNewFact":
         return """You are a natural, conversational museum guide.
@@ -24,7 +40,7 @@ IMPORTANT GUIDELINES:
 - Do not quote the visitor verbatim.
 - Keep continuity with the conversation.
 - Use only fact IDs provided in the prompt when fact IDs are requested.
-- Keep responses 2-3 sentences."""
+- Maximum two sentences."""
     if subaction in ("RepeatFact", "ClarifyFact"):
         return """You are a natural, conversational museum guide.
 
@@ -33,20 +49,20 @@ IMPORTANT GUIDELINES:
 - Do not quote the visitor verbatim.
 - For RepeatFact, use the exact fact ID provided in the prompt.
 - For ClarifyFact, avoid adding new fact IDs.
-- Keep responses 2-3 sentences."""
+- Maximum two sentences."""
     return """You are a natural, conversational museum guide.
 
 IMPORTANT GUIDELINES:
 - Be natural and concise.
 - Do not quote the visitor verbatim.
 - Keep continuity with the conversation.
-- Keep responses 2-3 sentences."""
+- Maximum two sentences."""
 
 
 def generate_with_openai(
     prompt: str,
     subaction: str,
-    model: str = "gpt-4o-mini",
+    model: str = "gpt-5.4",
     api_key_env: str = "api_key",
     timeout_sec: Optional[float] = None,
 ) -> str:
@@ -60,11 +76,71 @@ def generate_with_openai(
     if not api_key:
         raise RuntimeError(f"Missing OpenAI API key in env var '{api_key_env}'")
 
-    client = OpenAI(api_key=api_key, timeout=timeout_sec)
+    client = _make_client(api_key, timeout_sec)
     completion = client.chat.completions.create(
         model=model,
         messages=[
             {"role": "system", "content": _system_prompt_for_subaction(subaction)},
+            {"role": "user", "content": prompt},
+        ],
+    )
+    return (completion.choices[0].message.content or "").strip()
+
+
+def generate_judge_json(
+    prompt: str,
+    model: str = "gpt-5.4",
+    api_key_env: str = "api_key",
+    timeout_sec: Optional[float] = None,
+) -> str:
+    try:
+        from openai import OpenAI
+    except Exception as exc:
+        raise RuntimeError("Package 'openai' is required for RL judge generation.") from exc
+
+    _load_runtime_env()
+    api_key = os.getenv(api_key_env)
+    if not api_key:
+        raise RuntimeError(f"Missing OpenAI API key in env var '{api_key_env}'")
+
+    client = _make_client(api_key, timeout_sec)
+    completion = client.chat.completions.create(
+        model=model,
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a strict JSON verifier. Return valid JSON only, no markdown.",
+            },
+            {"role": "user", "content": prompt},
+        ],
+    )
+    return (completion.choices[0].message.content or "").strip()
+
+
+def generate_revision_text(
+    prompt: str,
+    model: str = "gpt-5.4",
+    api_key_env: str = "api_key",
+    timeout_sec: Optional[float] = None,
+) -> str:
+    try:
+        from openai import OpenAI
+    except Exception as exc:
+        raise RuntimeError("Package 'openai' is required for RL revision generation.") from exc
+
+    _load_runtime_env()
+    api_key = os.getenv(api_key_env)
+    if not api_key:
+        raise RuntimeError(f"Missing OpenAI API key in env var '{api_key_env}'")
+
+    client = _make_client(api_key, timeout_sec)
+    completion = client.chat.completions.create(
+        model=model,
+        messages=[
+            {
+                "role": "system",
+                "content": "Revise the candidate text only. Output final response text only.",
+            },
             {"role": "user", "content": prompt},
         ],
     )

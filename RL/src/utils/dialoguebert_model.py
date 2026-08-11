@@ -51,7 +51,7 @@ class DialogueBERTModel(nn.Module):
         super().__init__()
         
         # Load base BERT model
-        self.bert = BertModel.from_pretrained(base_model_name)
+        self.bert = BertModel.from_pretrained(base_model_name, local_files_only=True)
         self.config = self.bert.config
         self.embedding_dim = embedding_dim
         

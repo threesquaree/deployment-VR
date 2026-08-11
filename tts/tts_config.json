@@ -1,0 +1,6 @@
+{
+  "_comment": "Shared voice config for BOTH study agents (RL + baseline). FROZEN for the study - do not change voice or length_scale once participants have started.",
+  "voice": "en_GB-alba-medium",
+  "length_scale": 1.0,
+  "enabled": true
+}

@@ -57,12 +57,7 @@ public static class SavWav {
 	
 	private static string GetPath(string newName)
 	{
-#if UNITY_EDITOR
-		return Application.dataPath +"/OUTPUT/"+newName;
-#else
-        /// Old: return Application.dataPath + "/" + newName;
-        return Application.dataPath + "/OUTPUT/" + newName;
-#endif
+		return GetEyeData.getPath(newName);
 	}
 
 	public static AudioClip TrimSilence(AudioClip clip, float min) {

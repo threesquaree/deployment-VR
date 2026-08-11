@@ -1,0 +1,21 @@
+version: "3.1"
+
+stories:
+
+- story: sending actor id
+  steps:
+    - intent: sending_actor_id
+    - action: action_get_actor_id
+
+
+- story: communicating with agent
+  steps:
+    - intent: communicating_with_agent
+    - action: action_providing_response
+
+
+- story: prompting user
+  steps:
+    - intent: prompting_user
+    - action: action_interactive_guide_interaction
+

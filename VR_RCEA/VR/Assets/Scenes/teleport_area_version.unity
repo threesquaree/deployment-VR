@@ -3672,6 +3672,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &108402925
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8954,6 +8955,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &242984455
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11925,6 +11927,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &307305779
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15031,14 +15034,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 382427522}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 18.706741, y: -2.3415792, z: 10.426087}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2053362366}
   - {fileID: 1991350959}
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_Father: {fileID: 1725209953}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &382427525
 AudioSource:
@@ -25678,6 +25681,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 589e8d35bb511a34ea59c2169fc04d36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dictationStaleResetSeconds: 6
+  initialSilenceTimeoutSeconds: 20
+  autoSilenceTimeoutSeconds: 3
+  degradedRecognizerThreshold: 2
+  speechBackend: 1
+  useReusableRecognizer: 0
+  dictationStopWatchdogSeconds: 3.5
+  getEyeData: {fileID: 0}
   outputText: {fileID: 0}
 --- !u!4 &662290790
 Transform:
@@ -25691,7 +25702,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &662290791
 MonoBehaviour:
@@ -25707,6 +25718,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runtimeBaseUrl: http://127.0.0.1:8000
   outputText: {fileID: 0}
+  dictationStopWatchdogSeconds: 3.5
+  dictationStaleResetSeconds: 6
+  initialSilenceTimeoutSeconds: 20
+  autoSilenceTimeoutSeconds: 3
+  useReusableRecognizer: 0
+  speechBackend: 1
+  getEyeData: {fileID: 0}
+  degradedCaptureThreshold: 2
 --- !u!1 &665611356
 GameObject:
   m_ObjectHideFlags: 0
@@ -26984,6 +27003,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &682841615
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -28014,6 +28034,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &710875281
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31991,6 +32012,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &828993860
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39714,18 +39736,31 @@ MonoBehaviour:
   player: {fileID: 59371513}
   heatMapScript: {fileID: 998905462}
   mic: 
+  benchPressKey: 289
   btn: {fileID: 0}
   triggerAction:
     actionPath: 
     needsReinit: 0
   handType: 0
-  waitTime: 60
+  waitTime: 40
   agentMode: 1
   rasa: {fileID: 0}
   rl: {fileID: 662290791}
+  enablePeriodicPrompting: 1
+  enableFocusChangeGreeting: 1
+  focusChangeDwellSeconds: 5
+  focusChangeCooldownSeconds: 8
+  focusChangeQuietAfterTurnSeconds: 6
+  maxBaselineSilencePrompts: 3
   stableFocusThresholdSeconds: 0.5
+  rawFocusFallbackWindowSeconds: 1
+  enterNoneThresholdSeconds: 2
   flushIntervalSeconds: 1
   enableEye120Sampling: 1
+  enableFixationEventStream: 1
+  fixationMinDurationMs: 100
+  fixationMaxGapMs: 120
+  fixationAlgorithmVersion: focus_segment_v1
   enableDataCollectionAfterActorSetup: 1
 --- !u!1 &998954482
 GameObject:
@@ -44425,6 +44460,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &1115172157
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -45255,6 +45291,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!114 &1133759926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48687,6 +48724,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &1217801979
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -55903,6 +55941,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &1411772651
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -59168,6 +59207,10 @@ PrefabInstance:
     - target: {fileID: 6935043767126067586, guid: 085139b02477c704d893731aac98f5ee, type: 3}
       propertyPath: centerGrey.r
       value: 0.5660378
+      objectReference: {fileID: 0}
+    - target: {fileID: 6935043767126067587, guid: 085139b02477c704d893731aac98f5ee, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6935043767126067587, guid: 085139b02477c704d893731aac98f5ee, type: 3}
       propertyPath: m_PreserveAspect
@@ -63043,6 +63086,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &1575049640
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -65552,6 +65596,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &1626066142
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -66400,7 +66445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 13693334, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_Height
-      value: 1.65
+      value: 1.9
       objectReference: {fileID: 0}
     - target: {fileID: 13693334, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_Radius
@@ -68970,7 +69015,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4049497896539279435, guid: dae967d01d77be3478eb028c757e3e17, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4049497896539279435, guid: dae967d01d77be3478eb028c757e3e17, type: 3}
       propertyPath: m_LocalPosition.x
@@ -69014,6 +69059,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dae967d01d77be3478eb028c757e3e17, type: 3}
+--- !u!4 &1725209953 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4049497896539279435, guid: dae967d01d77be3478eb028c757e3e17, type: 3}
+  m_PrefabInstance: {fileID: 1725209952}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1727557796
 GameObject:
   m_ObjectHideFlags: 0
@@ -76021,6 +76071,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &1903980211
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -79948,6 +79999,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &2020233626
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -84195,6 +84247,7 @@ MonoBehaviour:
   OnUserStartedSpeaking:
     m_PersistentCalls:
       m_Calls: []
+  enableLegacyDictation: 0
 --- !u!65 &2121592071
 BoxCollider:
   m_ObjectHideFlags: 0

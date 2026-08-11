@@ -85,6 +85,9 @@ public class HeatMap : MonoBehaviour
     // Save the heat maps
     public void SaveData() {
         string filePath = getPath();
+        string directory = Path.GetDirectoryName(filePath);
+        if (!string.IsNullOrEmpty(directory))
+            Directory.CreateDirectory(directory);
         StreamWriter writer = new StreamWriter(filePath);
 
         string delimiter = ",";
@@ -103,10 +106,6 @@ public class HeatMap : MonoBehaviour
     
     private string getPath()
     {
-#if UNITY_EDITOR
-        return Application.dataPath +"/OUTPUT/"+filename+".csv";
-#else
-        return Application.dataPath + "/" + filename +".csv";
-#endif
+        return GetEyeData.getPath((filename ?? "") + ".csv");
     }
 }

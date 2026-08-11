@@ -1,0 +1,66 @@
+version: "3.1"
+
+intents:
+  - sending_actor_id
+  - communicating_with_agent
+  - prompting_user
+
+
+
+entities:
+  - actorID
+  - objName
+  - aoiName
+  - agentID
+
+slots:
+  actorID:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: actorID
+  agentID:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: agentID
+  objName:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: objName
+  aoiName:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: aoiName
+  speech_text:
+    type: text
+    mappings:
+      - type: from_text
+
+
+
+actions:
+  - action_providing_response
+  - action_get_actor_id
+  - action_interactive_guide_interaction
+
+
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+  
+
+
+#responses:
+  #utter_greet:
+  #- text: "Hello! Welcome to the virtual version of Rembrandt House Museum! Nice to meet you, I am your virtual guide. You will visit the exhibition The Blacks in Rembrandt's Time."
+
+  #utter_goodbye:
+  #- text: "Bye"
+
+
+
+  

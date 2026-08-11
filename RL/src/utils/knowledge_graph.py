@@ -2,6 +2,7 @@
 Simple Knowledge Graph - Clean, non-duplicate fact loading
 """
 
+import copy
 import json
 from typing import Dict, List, Optional, Tuple
 
@@ -12,6 +13,7 @@ class SimpleKnowledgeGraph:
         self.exhibit_facts: Dict[str, List[str]] = {}
         self.exhibit_aois: Dict[str, List[str]] = {}
         self.exhibit_metadata: Dict[str, dict] = {}
+        self.aoi_metadata: Dict[str, dict] = {}
         
         if json_path:
             self._load_from_json(json_path)
@@ -23,6 +25,7 @@ class SimpleKnowledgeGraph:
             
         exhibits = data.get("exhibits", {})
         aois_data = data.get("aois", {})
+        self.aoi_metadata = aois_data
         
         for exhibit_name, exhibit_data in exhibits.items():
             self.exhibit_metadata[exhibit_name] = exhibit_data
@@ -49,7 +52,10 @@ class SimpleKnowledgeGraph:
         
         if "style" in exhibit_data:
             facts.append(f"Style: {exhibit_data['style']}")
-        
+
+        if "aoi_summary_fact" in exhibit_data:
+            facts.append(exhibit_data["aoi_summary_fact"])
+
         if "artist" in exhibit_data and "year" not in exhibit_data:
             facts.append(f"Artist: {exhibit_data['artist']}")
         
@@ -80,6 +86,42 @@ class SimpleKnowledgeGraph:
     
     def get_exhibit_metadata(self, exhibit_name: str) -> dict:
         return self.exhibit_metadata.get(exhibit_name, {})
+
+    def get_aoi_metadata(self, aoi_name: str) -> dict:
+        return self.aoi_metadata.get(aoi_name, {})
+
+    def get_auxiliary_context(self, exhibit_name: str) -> dict:
+        """Return non-fact auxiliary context for an exhibit.
+
+        This intentionally excludes fields already embedded in the formal facts:
+        description, more_info, artist, year, location, style.
+        """
+        metadata = self.get_exhibit_metadata(exhibit_name)
+        if not metadata:
+            return {}
+
+        aux_context = {}
+        painting_name = metadata.get("painting_name")
+        object_name = metadata.get("object_name")
+        if painting_name:
+            aux_context["painting_name"] = painting_name
+        if object_name:
+            aux_context["object_name"] = object_name
+
+        aoi_details = []
+        for aoi_name in metadata.get("aois", []):
+            aoi_meta = self.get_aoi_metadata(aoi_name)
+            if not aoi_meta:
+                continue
+            aoi_details.append({
+                "name": aoi_meta.get("name", aoi_name),
+                "description": aoi_meta.get("description", ""),
+            })
+
+        if aoi_details:
+            aux_context["aois"] = aoi_details
+
+        return copy.deepcopy(aux_context)
     
     def get_total_facts_count(self) -> int:
         return sum(len(facts) for facts in self.exhibit_facts.values())
@@ -144,4 +186,3 @@ class SimpleKnowledgeGraph:
         print("\n" + "="*80)
         print(f"TOTALS: {len(self.exhibit_facts)} exhibits | {total_facts} facts | {total_aois} AOIs")
         print("="*80 + "\n")
-

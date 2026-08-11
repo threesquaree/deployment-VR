@@ -13,6 +13,8 @@
 **/*.sqlite
 CA/original/.rasa/
 CA/original/logs/
+CA/improved/.rasa/
+CA/improved/logs/
 RL/logs/
 debug_logs/
 
@@ -21,6 +23,7 @@ debug_logs/
 **/*.pth
 **/*.ckpt
 CA/original/models/*.tar.gz
+CA/improved/models/*.tar.gz
 
 # Unity / Visual Studio generated files
 VR_RCEA/VR/.vs/
@@ -37,3 +40,23 @@ VR_RCEA/VR/Assets/OUTPUT/
 # Local papers and raw source assets
 paper/
 VR_RCEA/VR/Assets/HERE/Paintings (Raw)/
+
+# Study data -- NEVER COMMIT. 12 GB of participant voice recordings (714 wav
+# files), verbatim transcripts and gaze traces: identifiable personal data under
+# GDPR, and 19 files exceed GitHub's 100 MB hard limit anyway. Transfer it by
+# encrypted drive or institutional storage instead. The .py tooling in data/ is
+# code, so it stays tracked.
+data/*
+!data/*.py
+
+# TTS: vendored Piper runtime and voice models (526 MB; en_US-ryan-high.onnx and
+# en_US-ljspeech-high.onnx are both OVER GitHub's 100 MB hard limit, so a push
+# containing them is rejected outright). Re-downloadable from the Piper releases.
+# Only piper_tts.py and tts_config.json are project code, and those stay tracked.
+tts/voices/
+tts/piper/
+tts/audition/
+tts/tmp/
+
+# STT request log -- its "text" field records transcribed participant speech.
+stt/logs/

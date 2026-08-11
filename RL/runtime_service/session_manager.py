@@ -1,7 +1,7 @@
 ﻿from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from uuid import uuid4
 
 from inference.rl_runtime import RLMuseumRuntime
@@ -15,10 +15,17 @@ class SessionState:
     started_at: str
     runtime: RLMuseumRuntime
     dialogue_history: List[Tuple[str, str, int]] = field(default_factory=list)
+    conversation_history_rows: List[Dict[str, Any]] = field(default_factory=list)
     current_exhibit: Optional[str] = None
     current_object_name: Optional[str] = None
     current_aoi_name: Optional[str] = None
     last_turn_timestamp: Optional[str] = None
+    last_action: Optional[str] = None
+    last_agent_reply: str = ""
+    has_real_user_turn: bool = False
+    session_silence_count: int = 0
+    silence_fired_since_last_user_turn: bool = False
+    exhibit_silence_count: Dict[str, int] = field(default_factory=dict)
 
 
 class SessionManager:
@@ -28,11 +35,12 @@ class SessionManager:
 
     def create_session(
         self,
+        session_id: Optional[str],
         participant_id: Optional[str],
         actor_node_id: Optional[str],
         started_at: str,
     ) -> SessionState:
-        session_id = uuid4().hex
+        session_id = str(session_id or uuid4().hex)
         state = SessionState(
             session_id=session_id,
             participant_id=participant_id,

@@ -1,0 +1,34 @@
+version: "3.1"
+
+nlu:
+- intent: sending_actor_id
+  examples: |
+    - { "sender": "sending_actor_id", "message": 400 }
+    - { "sender": "sending_actor_id", "message": 237 }
+    - { "sender": "sending_actor_id", "message": 8  }
+    - { "sender": "sending_actor_id", "message": 40 }
+    - { "sender": "sending_actor_id", "message": 23 }
+    - { "sender": "sending_actor_id", "message": 81 }
+
+
+- intent: communicating_with_agent
+  examples: |
+    - { "sender": "communicating_with_agent", "message": "tell me about this painting" }
+    - { "sender": "communicating_with_agent", "message": "Who created this painting?"  }
+    - { "sender": "communicating_with_agent", "message": "Yes, sure"  }
+    - { "sender": "communicating_with_agent", "message": "tell me about the painting" }
+    - { "sender": "communicating_with_agent", "message": "Who created?"  }
+    - { "sender": "communicating_with_agent", "message": "artist"  }
+    - { "sender": "communicating_with_agent", "message": "style"  }
+    - { "sender": "communicating_with_agent", "message": "material"  }
+    
+
+- intent: prompting_user
+  examples: |
+    - { "sender": "prompting_user", "message": "prompting_user" }
+    - { "sender": "prompting_user", "message": "prompting_user"  }
+    - { "sender": "prompting_user", "message": "prompting_user"  }
+    - { "sender": "prompting_user", "message": "prompting_user" }
+    - { "sender": "prompting_user", "message": "prompting_user"  }
+    - { "sender": "prompting_user", "message": "prompting_user"  }
+

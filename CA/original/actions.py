@@ -5,10 +5,10 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 
-import os, csv, random
+import os, csv, random, json
 import sys
 from time import perf_counter
-from datetime import datetime
+from datetime import datetime, timezone
 from Neo4jClient import Neo4jClient
 from pathlib import Path
 
@@ -49,13 +49,11 @@ client = OpenAI(api_key=API_KEY)
 GRAPH = Neo4jClient(uri="bolt://localhost:7687", user="neo4j", password="12345678")
 POLICY_MODE_ALLOWED = {"baseline", "rl"}
 RL_PROJECT_ROOT = Path(os.getenv("RL_PROJECT_ROOT", r"C:\Users\Vrmuseum\Desktop\Research\RL"))
-RL_CHECKPOINT_PATH = Path(
-    os.getenv("RL_CHECKPOINT_PATH", str(RL_PROJECT_ROOT / "H3_MDP_StateMachine.pt"))
-)
+RL_CHECKPOINT_PATH = RL_PROJECT_ROOT / "H3_MDP_StateMachine.pt"
 RL_KG_PATH = Path(
     os.getenv("RL_KG_PATH", str(RL_PROJECT_ROOT / "KG" / "museum_knowledge_graph.json"))
 )
-RL_LLM_MODEL = os.getenv("RL_LLM_MODEL", "gpt-4o-mini")
+RL_LLM_MODEL = os.getenv("RL_LLM_MODEL", "gpt-5.4")
 _RL_RUNTIME = None
 
 
@@ -227,12 +225,109 @@ def tts_from(source: str, text: str, window_sec: float = 12.0, turn_id: str = "?
 # =============================================================================
 
 def log_conversation(csv_filename, actor, response, aoiname, objectname):
-    with open(csv_filename, mode='a', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        if file.tell() == 0:
-            writer.writerow(['Timestamp', 'Actor', 'Response', 'AOI', 'Object'])
-        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-        writer.writerow([timestamp, actor, response, aoiname, objectname])
+    # Deprecated: use unified JSONL turn log instead.
+    return
+
+
+UNIFIED_TURN_LOG_DIR = Path(r"C:\Users\Vrmuseum\Desktop\Research\data\sessions")
+UNIFIED_TURN_LOG_DIR.mkdir(parents=True, exist_ok=True)
+_CA_SESSION_DIRS: Dict[str, Path] = {}
+
+
+def _iso_now_ms() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+
+
+def _safe_utc_tag(raw_ts: Any) -> str:
+    if raw_ts is None:
+        return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%SZ")
+    candidate = str(raw_ts).strip()
+    if not candidate:
+        return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%SZ")
+    candidate = candidate.replace(" ", "T").replace(":", "-").replace("+00:00", "Z").replace(".", "-")
+    return candidate
+
+
+def _get_ca_session_dir(session_id: Any, turn_start_ts: Any) -> Path:
+    key = str(session_id)
+    if key in _CA_SESSION_DIRS:
+        return _CA_SESSION_DIRS[key]
+    utc_tag = _safe_utc_tag(turn_start_ts)
+    session_dir = UNIFIED_TURN_LOG_DIR / f"ca_{key}_{utc_tag}"
+    session_dir.mkdir(parents=True, exist_ok=True)
+    _CA_SESSION_DIRS[key] = session_dir
+    return session_dir
+
+
+def _coerce_rasa_timestamp(ts_value: Any) -> Any:
+    if ts_value is None:
+        return None
+    try:
+        ts = float(ts_value)
+        return datetime.fromtimestamp(ts).isoformat(timespec="milliseconds")
+    except Exception:
+        return str(ts_value)
+
+
+def _estimate_turn_number(tracker: Tracker) -> int:
+    try:
+        events = tracker.events or []
+        user_turns = sum(1 for e in events if isinstance(e, dict) and e.get("event") == "user")
+        return max(1, int(user_turns))
+    except Exception:
+        return 1
+
+
+def log_unified_turn(
+    session_id: Any,
+    turn_id: str,
+    turn_number: int,
+    turn_start_ts: Any,
+    user_asr_end_ts: Any,
+    agent_send_ts: Any,
+    agent_tts_start_ts: Any,
+    agent_tts_end_ts: Any,
+    user_text: str,
+    agent_text: str,
+    referenced_object: Any,
+    referenced_aoi: Any,
+    action_label: Any,
+    source: str = "CA",
+):
+    payload = {
+        "session_id": str(session_id),
+        "turn_id": turn_id,
+        "turn_number": turn_number,
+        "turn_start_ts": turn_start_ts,
+        "user_asr_end_ts": user_asr_end_ts,
+        "agent_send_ts": agent_send_ts,
+        "agent_tts_start_ts": agent_tts_start_ts,
+        "agent_tts_end_ts": agent_tts_end_ts,
+        "user_text": user_text,
+        "agent_text": agent_text,
+        "referenced_object": referenced_object,
+        "referenced_aoi": referenced_aoi,
+        "action_label": action_label,
+        "source": source,
+        "timestamp": _iso_now_ms(),
+        "record_type": "turn",
+    }
+    session_dir = _get_ca_session_dir(session_id, turn_start_ts)
+    path = session_dir / "turns.jsonl"
+    with path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(payload, ensure_ascii=False) + "\n")
+    meta_path = session_dir / "meta.json"
+    if not meta_path.exists():
+        meta = {
+            "source": "ca",
+            "session_id": str(session_id),
+            "started_at_utc": _iso_now_ms(),
+            "participant_id": str(session_id),
+            "actor_id": str(session_id),
+            "schema_version": "sessions_v1",
+        }
+        with meta_path.open("w", encoding="utf-8") as mf:
+            json.dump(meta, mf, ensure_ascii=False, indent=2)
 
 
 # =============================================================================
@@ -280,6 +375,9 @@ class ActionProvidingResponse(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         turn_id = _new_turn_id()
+        turn_number = _estimate_turn_number(tracker)
+        turn_start_ts = _iso_now_ms()
+        user_asr_end_ts = _coerce_rasa_timestamp((tracker.latest_message or {}).get("timestamp"))
         msg_text = (tracker.latest_message or {}).get("text", "")
         logger.info("[ENTER][%s] ActionProvidingResponse text='%s'", turn_id, msg_text)
         log_debug("RASA", "ActionProvidingResponse开始", f"turn_id={turn_id}, msg_text={msg_text}")
@@ -336,14 +434,33 @@ class ActionProvidingResponse(Action):
                 )
 
                 random_response = random.choice(responses)
+                agent_send_ts = _iso_now_ms()
                 dispatcher.utter_message(random_response)
                 logger.info("[SAY][%s] providing_response(REPEAT) -> '%s'", turn_id, random_response)
+                agent_tts_start_ts = _iso_now_ms()
                 tts_from("providing_response", random_response, turn_id=turn_id)
+                agent_tts_end_ts = _iso_now_ms()
 
                 self._log_conversation(agent_id, actor_id, random_response)
                 log_conversation(
                     f'logs/conversation_{actor_id}.csv',
                     f'agent_{agent_id}', random_response, aoi_name, obj_now
+                )
+                log_unified_turn(
+                    session_id=actor_id,
+                    turn_id=turn_id,
+                    turn_number=turn_number,
+                    turn_start_ts=turn_start_ts,
+                    user_asr_end_ts=user_asr_end_ts,
+                    agent_send_ts=agent_send_ts,
+                    agent_tts_start_ts=agent_tts_start_ts,
+                    agent_tts_end_ts=agent_tts_end_ts,
+                    user_text=msg_text,
+                    agent_text=random_response,
+                    referenced_object=obj_now,
+                    referenced_aoi=aoi_name,
+                    action_label=None,
+                    source="CA",
                 )
 
             else:
@@ -372,14 +489,33 @@ class ActionProvidingResponse(Action):
                     system_role = self._get_system_role(actor_id, agent_id, msg_text)
                     response = self.get_chatgpt_response(system_role, msg_text)
 
+                agent_send_ts = _iso_now_ms()
                 dispatcher.utter_message(response)
                 logger.info("[SAY][%s] providing_response -> '%s'", turn_id, response)
+                agent_tts_start_ts = _iso_now_ms()
                 tts_from("providing_response", response, turn_id=turn_id)
+                agent_tts_end_ts = _iso_now_ms()
 
                 self._log_conversation(agent_id, actor_id, response)
                 log_conversation(
                     f'logs/conversation_{actor_id}.csv',
                     f'agent_{agent_id}', response, aoi_name, obj_now
+                )
+                log_unified_turn(
+                    session_id=actor_id,
+                    turn_id=turn_id,
+                    turn_number=turn_number,
+                    turn_start_ts=turn_start_ts,
+                    user_asr_end_ts=user_asr_end_ts,
+                    agent_send_ts=agent_send_ts,
+                    agent_tts_start_ts=agent_tts_start_ts,
+                    agent_tts_end_ts=agent_tts_end_ts,
+                    user_text=msg_text,
+                    agent_text=response,
+                    referenced_object=obj_now,
+                    referenced_aoi=aoi_name,
+                    action_label=None,
+                    source="CA",
                 )
 
             return [SlotSet("actorID", actor_id), SlotSet("agentID", agent_id)]
@@ -410,14 +546,33 @@ class ActionProvidingResponse(Action):
             )
 
             random_response = random.choice(responses)
+            agent_send_ts = _iso_now_ms()
             dispatcher.utter_message(random_response)
             logger.info("[SAY][%s] providing_response(REPEAT/FALLBACK) -> '%s'", turn_id, random_response)
+            agent_tts_start_ts = _iso_now_ms()
             tts_from("providing_response", random_response, turn_id=turn_id)
+            agent_tts_end_ts = _iso_now_ms()
 
             self._log_conversation(agent_id, actor_id, random_response)
             log_conversation(
                 f'logs/conversation_{actor_id}.csv',
                 f'agent_{agent_id}', random_response, 'None', 'None'
+            )
+            log_unified_turn(
+                session_id=actor_id,
+                turn_id=turn_id,
+                turn_number=turn_number,
+                turn_start_ts=turn_start_ts,
+                user_asr_end_ts=user_asr_end_ts,
+                agent_send_ts=agent_send_ts,
+                agent_tts_start_ts=agent_tts_start_ts,
+                agent_tts_end_ts=agent_tts_end_ts,
+                user_text=msg_text,
+                agent_text=random_response,
+                referenced_object=None,
+                referenced_aoi=None,
+                action_label=None,
+                source="CA",
             )
 
         else:
@@ -436,14 +591,33 @@ class ActionProvidingResponse(Action):
             Exhibit Data: {GRAPH.get_graph_data()}
             """
             response = self.get_chatgpt_response(system_role, msg_text)
+            agent_send_ts = _iso_now_ms()
             dispatcher.utter_message(response)
             logger.warning("[SAY][%s] providing_response(FALLBACK) -> '%s'", turn_id, response)
+            agent_tts_start_ts = _iso_now_ms()
             tts_from("providing_response", response, turn_id=turn_id)
+            agent_tts_end_ts = _iso_now_ms()
 
             self._log_conversation(agent_id, actor_id, response)
             log_conversation(
                 f'logs/conversation_{actor_id}.csv',
                 f'agent_{agent_id}', response, 'None', 'None'
+            )
+            log_unified_turn(
+                session_id=actor_id,
+                turn_id=turn_id,
+                turn_number=turn_number,
+                turn_start_ts=turn_start_ts,
+                user_asr_end_ts=user_asr_end_ts,
+                agent_send_ts=agent_send_ts,
+                agent_tts_start_ts=agent_tts_start_ts,
+                agent_tts_end_ts=agent_tts_end_ts,
+                user_text=msg_text,
+                agent_text=response,
+                referenced_object=None,
+                referenced_aoi=None,
+                action_label=None,
+                source="CA",
             )
 
         return [SlotSet("actorID", actor_id), SlotSet("agentID", agent_id)]
@@ -499,17 +673,26 @@ class ActionProvidingResponse(Action):
 
     def _get_system_role(self, actorID, agentID, user_input) -> str:
         return f"""
-            ### System Role
-            You are an AI assistant serving as a virtual museum guide for a VR exhibition of five unique paintings.
-            The main room has five paintings across two walls.
-            Currently, the user is viewing: ({GRAPH.get_last_obj(actorID)}).
-            Focus area: {GRAPH.get_last_aoi(actorID)}.
-            Image: {GRAPH.get_image_of_painting(actorID)}.
-            Prior agent response: {GRAPH.get_last_agent_response(actorID, agentID)}.
-            Conversation history: {GRAPH.conversation_history(actorID, agentID)}.
-            **User Input**: {user_input}
-            Guidelines: no links/emojis; no speculation; avoid repetition; max two sentences.
-            Exhibit Data: {GRAPH.get_graph_data()}
+[System Role]
+You are an AI assistant serving as a virtual museum guide for a VR exhibition of five unique paintings.
+
+[Current Context]
+The main room has five paintings across two walls.
+Currently, the user is viewing: ({GRAPH.get_last_obj(actorID)}).
+Focus area: {GRAPH.get_last_aoi(actorID)}.
+Image: {GRAPH.get_image_of_painting(actorID)}.
+Prior agent response: {GRAPH.get_last_agent_response(actorID, agentID)}.
+Conversation history: {GRAPH.conversation_history(actorID, agentID)}.
+Exhibit Data: {GRAPH.get_graph_data()}.
+
+[User Input]
+{user_input}
+
+[Response Constraints]
+No links or emojis.
+No speculation.
+Avoid repetition.
+Maximum two sentences.
         """
 
     def _log_conversation(self, first_actor, second_actor, response):
@@ -527,7 +710,7 @@ class ActionProvidingResponse(Action):
                 messages.append({"role": "user", "content": user_text})
 
             completion = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=RL_LLM_MODEL,
                 messages=messages,
             )
             return completion.choices[0].message.content
@@ -604,7 +787,7 @@ class interactive_guide_interaction(Action):
             if user_text:
                 messages.append({"role": "user", "content": user_text})
             completion = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=RL_LLM_MODEL,
                 messages=messages,
             )
             return completion.choices[0].message.content

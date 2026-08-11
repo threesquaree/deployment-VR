@@ -12,7 +12,7 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class PerformanceProfiler : MonoBehaviour
 {
-    private const string PERF_LOG_FILE = "C:/Users/Vrmuseum/Desktop/Research/debug_logs/unity_perf.log";
+    private const string PERF_LOG_FILE = "C:/Users/s3533204/Downloads/Research/Research/debug_logs/unity_perf.log";
     
     private float fps = 0f;
     private float frameTime = 0f;
